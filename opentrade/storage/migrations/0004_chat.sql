@@ -1,0 +1,1 @@
+-- Migration 0004: Chat messages and pending actions

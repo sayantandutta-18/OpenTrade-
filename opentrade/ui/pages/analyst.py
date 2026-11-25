@@ -1,0 +1,1 @@
+"""AI analyst report page."""

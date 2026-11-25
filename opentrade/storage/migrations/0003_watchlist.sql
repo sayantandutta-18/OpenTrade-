@@ -1,0 +1,1 @@
+-- Migration 0003: Watchlists and comparison sets
