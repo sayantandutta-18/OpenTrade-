@@ -1,1 +1,196 @@
-symbol,name,sector,headquarters,market_cap,source,date
+symbol,name,sector,hq_city,hq_country,lat,lon,market_cap_usd_bn,source,source_date
+AAPL,Apple Inc.,Tech,Cupertino,USA,37.3230,-122.0322,3450.0,Public Exchange Filings,2026-01-15
+MSFT,Microsoft Corporation,Tech,Redmond,USA,47.6740,-122.1215,3150.0,Public Exchange Filings,2026-01-15
+NVDA,NVIDIA Corporation,Tech,Santa Clara,USA,37.3541,-121.9552,3200.0,Public Exchange Filings,2026-01-15
+GOOGL,Alphabet Inc.,Tech,Mountain View,USA,37.3861,-122.0839,2300.0,Public Exchange Filings,2026-01-15
+AMZN,Amazon.com Inc.,Retail,Seattle,USA,47.6062,-122.3321,2250.0,Public Exchange Filings,2026-01-15
+META,Meta Platforms Inc.,Tech,Menlo Park,USA,37.4530,-122.1817,1550.0,Public Exchange Filings,2026-01-15
+AVGO,Broadcom Inc.,Tech,Palo Alto,USA,37.4419,-122.1430,920.0,Public Exchange Filings,2026-01-15
+TSLA,Tesla Inc.,Auto,Austin,USA,30.2672,-97.7431,850.0,Public Exchange Filings,2026-01-15
+ORCL,Oracle Corporation,Tech,Austin,USA,30.2672,-97.7431,460.0,Public Exchange Filings,2026-01-15
+CRM,Salesforce Inc.,Tech,San Francisco,USA,37.7749,-122.4194,310.0,Public Exchange Filings,2026-01-15
+ADBE,Adobe Inc.,Tech,San Jose,USA,37.3382,-121.8863,215.0,Public Exchange Filings,2026-01-15
+AMD,Advanced Micro Devices Inc.,Tech,Santa Clara,USA,37.3541,-121.9552,220.0,Public Exchange Filings,2026-01-15
+INTC,Intel Corporation,Tech,Santa Clara,USA,37.3541,-121.9552,95.0,Public Exchange Filings,2026-01-15
+CSCO,Cisco Systems Inc.,Tech,San Jose,USA,37.3382,-121.8863,235.0,Public Exchange Filings,2026-01-15
+IBM,International Business Machines,Tech,Armonk,USA,41.1265,-73.7140,210.0,Public Exchange Filings,2026-01-15
+QCOM,QUALCOMM Incorporated,Tech,San Diego,USA,32.7157,-117.1611,185.0,Public Exchange Filings,2026-01-15
+TXN,Texas Instruments Incorporated,Tech,Dallas,USA,32.7767,-96.7970,175.0,Public Exchange Filings,2026-01-15
+NOW,ServiceNow Inc.,Tech,Santa Clara,USA,37.3541,-121.9552,205.0,Public Exchange Filings,2026-01-15
+INTU,Intuit Inc.,Tech,Mountain View,USA,37.3861,-122.0839,180.0,Public Exchange Filings,2026-01-15
+AMAT,Applied Materials Inc.,Tech,Santa Clara,USA,37.3541,-121.9552,155.0,Public Exchange Filings,2026-01-15
+MU,Micron Technology Inc.,Tech,Boise,USA,43.6150,-116.2023,115.0,Public Exchange Filings,2026-01-15
+LRCX,Lam Research Corporation,Tech,Fremont,USA,37.5485,-121.9886,105.0,Public Exchange Filings,2026-01-15
+KLAC,KLA Corporation,Tech,Milpitas,USA,37.4323,-121.8996,98.0,Public Exchange Filings,2026-01-15
+PANW,Palo Alto Networks Inc.,Tech,Santa Clara,USA,37.3541,-121.9552,125.0,Public Exchange Filings,2026-01-15
+CRWD,CrowdStrike Holdings Inc.,Tech,Austin,USA,30.2672,-97.7431,88.0,Public Exchange Filings,2026-01-15
+SNOW,Snowflake Inc.,Tech,Bozeman,USA,45.6770,-111.0429,56.0,Public Exchange Filings,2026-01-15
+PLTR,Palantir Technologies Inc.,Tech,Denver,USA,39.7392,-104.9903,145.0,Public Exchange Filings,2026-01-15
+TSM,Taiwan Semiconductor Manufacturing,Tech,Hsinchu,Taiwan,24.8138,120.9675,980.0,Public Exchange Filings,2026-01-15
+ASML,ASML Holding N.V.,Tech,Veldhoven,Netherlands,51.4197,5.4050,310.0,Public Exchange Filings,2026-01-15
+SAP,SAP SE,Tech,Walldorf,Germany,49.2933,8.6425,295.0,Public Exchange Filings,2026-01-15
+ARM,Arm Holdings plc,Tech,Cambridge,UK,52.2053,0.1218,150.0,Public Exchange Filings,2026-01-15
+SHOP,Shopify Inc.,Tech,Ottawa,Canada,45.4215,-75.6972,135.0,Public Exchange Filings,2026-01-15
+SSNLF,Samsung Electronics Co. Ltd.,Tech,Suwon,South Korea,37.2636,127.0286,320.0,Public Exchange Filings,2026-01-15
+TCS.NS,Tata Consultancy Services,Tech,Mumbai,India,19.0760,72.8777,175.0,Public Exchange Filings,2026-01-15
+INFY,Infosys Limited,Tech,Bengaluru,India,12.9716,77.5946,92.0,Public Exchange Filings,2026-01-15
+SONY,Sony Group Corporation,Tech,Tokyo,Japan,35.6762,139.6503,130.0,Public Exchange Filings,2026-01-15
+6758.T,Keyence Corporation,Tech,Osaka,Japan,34.6937,135.5023,110.0,Public Exchange Filings,2026-01-15
+8035.T,Tokyo Electron Limited,Tech,Tokyo,Japan,35.6762,139.6503,85.0,Public Exchange Filings,2026-01-15
+JPM,JPMorgan Chase & Co.,Financials,New York,USA,40.7128,-74.0060,680.0,Public Exchange Filings,2026-01-15
+BAC,Bank of America Corporation,Financials,Charlotte,USA,35.2271,-80.8431,355.0,Public Exchange Filings,2026-01-15
+WFC,Wells Fargo & Company,Financials,San Francisco,USA,37.7749,-122.4194,240.0,Public Exchange Filings,2026-01-15
+GS,Goldman Sachs Group Inc.,Financials,New York,USA,40.7128,-74.0060,185.0,Public Exchange Filings,2026-01-15
+MS,Morgan Stanley,Financials,New York,USA,40.7128,-74.0060,210.0,Public Exchange Filings,2026-01-15
+C,Citigroup Inc.,Financials,New York,USA,40.7128,-74.0060,135.0,Public Exchange Filings,2026-01-15
+BLK,BlackRock Inc.,Financials,New York,USA,40.7128,-74.0060,155.0,Public Exchange Filings,2026-01-15
+V,Visa Inc.,Financials,San Francisco,USA,37.7749,-122.4194,615.0,Public Exchange Filings,2026-01-15
+MA,Mastercard Incorporated,Financials,Purchase,USA,41.0407,-73.7145,490.0,Public Exchange Filings,2026-01-15
+AXP,American Express Company,Financials,New York,USA,40.7128,-74.0060,215.0,Public Exchange Filings,2026-01-15
+BRK.B,Berkshire Hathaway Inc.,Financials,Omaha,USA,41.2565,-95.9345,990.0,Public Exchange Filings,2026-01-15
+SCHW,Charles Schwab Corporation,Financials,Westlake,USA,32.9901,-97.1945,140.0,Public Exchange Filings,2026-01-15
+PYPL,PayPal Holdings Inc.,Financials,San Jose,USA,37.3382,-121.8863,85.0,Public Exchange Filings,2026-01-15
+HSBC,HSBC Holdings plc,Financials,London,UK,51.5074,-0.1278,180.0,Public Exchange Filings,2026-01-15
+BARC.L,Barclays PLC,Financials,London,UK,51.5074,-0.1278,48.0,Public Exchange Filings,2026-01-15
+UBS,UBS Group AG,Financials,Zurich,Switzerland,47.3769,8.5417,105.0,Public Exchange Filings,2026-01-15
+BNP.PA,BNP Paribas SA,Financials,Paris,France,48.8566,2.3522,78.0,Public Exchange Filings,2026-01-15
+SAN,Banco Santander S.A.,Financials,Madrid,Spain,40.4168,-3.7038,76.0,Public Exchange Filings,2026-01-15
+ING,ING Groep N.V.,Financials,Amsterdam,Netherlands,52.3676,4.9041,54.0,Public Exchange Filings,2026-01-15
+DB,Deutsche Bank AG,Financials,Frankfurt,Germany,50.1109,8.6821,38.0,Public Exchange Filings,2026-01-15
+ALV.DE,Allianz SE,Financials,Munich,Germany,48.1351,11.5820,125.0,Public Exchange Filings,2026-01-15
+RY,Royal Bank of Canada,Financials,Toronto,Canada,43.6532,-79.3832,175.0,Public Exchange Filings,2026-01-15
+TD,Toronto-Dominion Bank,Financials,Toronto,Canada,43.6532,-79.3832,98.0,Public Exchange Filings,2026-01-15
+MUFG,Mitsubishi UFJ Financial Group,Financials,Tokyo,Japan,35.6762,139.6503,145.0,Public Exchange Filings,2026-01-15
+SMFG,Sumitomo Mitsui Financial Group,Financials,Tokyo,Japan,35.6762,139.6503,95.0,Public Exchange Filings,2026-01-15
+HDFCBANK.NS,HDFC Bank Limited,Financials,Mumbai,India,19.0760,72.8777,155.0,Public Exchange Filings,2026-01-15
+ICICIBANK.NS,ICICI Bank Limited,Financials,Mumbai,India,19.0760,72.8777,108.0,Public Exchange Filings,2026-01-15
+D05.SI,DBS Group Holdings Ltd,Financials,Singapore,Singapore,1.3521,103.8198,92.0,Public Exchange Filings,2026-01-15
+CBA.AX,Commonwealth Bank of Australia,Financials,Sydney,Australia,-33.8688,151.2093,165.0,Public Exchange Filings,2026-01-15
+ITUB,Itau Unibanco Holding S.A.,Financials,Sao Paulo,Brazil,-23.5505,-46.6333,58.0,Public Exchange Filings,2026-01-15
+TM,Toyota Motor Corporation,Auto,Toyota City,Japan,35.0825,137.1561,250.0,Public Exchange Filings,2026-01-15
+HMC,Honda Motor Co. Ltd.,Auto,Tokyo,Japan,35.6762,139.6503,45.0,Public Exchange Filings,2026-01-15
+VWAGY,Volkswagen AG,Auto,Wolfsburg,Germany,52.4227,10.7865,52.0,Public Exchange Filings,2026-01-15
+MBG.DE,Mercedes-Benz Group AG,Auto,Stuttgart,Germany,48.7758,9.1829,62.0,Public Exchange Filings,2026-01-15
+BMW.DE,Bayerische Motoren Werke AG,Auto,Munich,Germany,48.1351,11.5820,54.0,Public Exchange Filings,2026-01-15
+STLA,Stellantis N.V.,Auto,Hoofddorp,Netherlands,52.3025,4.6889,42.0,Public Exchange Filings,2026-01-15
+RACE,Ferrari N.V.,Auto,Maranello,Italy,44.5263,10.8667,85.0,Public Exchange Filings,2026-01-15
+GM,General Motors Company,Auto,Detroit,USA,42.3314,-83.0458,58.0,Public Exchange Filings,2026-01-15
+F,Ford Motor Company,Auto,Dearborn,USA,42.3223,-83.1763,42.0,Public Exchange Filings,2026-01-15
+RIVN,Rivian Automotive Inc.,Auto,Irvine,USA,33.6846,-117.8265,14.0,Public Exchange Filings,2026-01-15
+BYDDY,BYD Company Limited,Auto,Shenzhen,China,22.5431,114.0579,110.0,Public Exchange Filings,2026-01-15
+LI,Li Auto Inc.,Auto,Beijing,China,39.9042,116.4074,26.0,Public Exchange Filings,2026-01-15
+NIO,NIO Inc.,Auto,Shanghai,China,31.2304,121.4737,10.0,Public Exchange Filings,2026-01-15
+HYMTF,Hyundai Motor Company,Auto,Seoul,South Korea,37.5665,126.9780,44.0,Public Exchange Filings,2026-01-15
+MARUTI.NS,Maruti Suzuki India Limited,Auto,New Delhi,India,28.6139,77.2090,46.0,Public Exchange Filings,2026-01-15
+XOM,Exxon Mobil Corporation,Energy,Spring,USA,30.0799,-95.4172,505.0,Public Exchange Filings,2026-01-15
+CVX,Chevron Corporation,Energy,San Ramon,USA,37.7799,-121.9780,285.0,Public Exchange Filings,2026-01-15
+COP,ConocoPhillips,Energy,Houston,USA,29.7604,-95.3698,135.0,Public Exchange Filings,2026-01-15
+SLB,SLB (Schlumberger),Energy,Houston,USA,29.7604,-95.3698,62.0,Public Exchange Filings,2026-01-15
+EOG,EOG Resources Inc.,Energy,Houston,USA,29.7604,-95.3698,74.0,Public Exchange Filings,2026-01-15
+SHEL,Shell plc,Energy,London,UK,51.5074,-0.1278,210.0,Public Exchange Filings,2026-01-15
+BP,BP p.l.c.,Energy,London,UK,51.5074,-0.1278,86.0,Public Exchange Filings,2026-01-15
+TTE,TotalEnergies SE,Energy,Courbevoie,France,48.8967,2.2567,145.0,Public Exchange Filings,2026-01-15
+EQNR,Equinor ASA,Energy,Stavanger,Norway,58.9700,5.7331,72.0,Public Exchange Filings,2026-01-15
+ENB,Enbridge Inc.,Energy,Calgary,Canada,51.0447,-114.0719,92.0,Public Exchange Filings,2026-01-15
+CNQ,Canadian Natural Resources,Energy,Calgary,Canada,51.0447,-114.0719,75.0,Public Exchange Filings,2026-01-15
+PBR,Petroleo Brasileiro S.A.,Energy,Rio de Janeiro,Brazil,-22.9068,-43.1729,88.0,Public Exchange Filings,2026-01-15
+RELIANCE.NS,Reliance Industries Limited,Energy,Mumbai,India,19.0760,72.8777,215.0,Public Exchange Filings,2026-01-15
+WDS.AX,Woodside Energy Group Ltd,Energy,Perth,Australia,-31.9505,115.8605,32.0,Public Exchange Filings,2026-01-15
+LLY,Eli Lilly and Company,Healthcare,Indianapolis,USA,39.7684,-86.1581,760.0,Public Exchange Filings,2026-01-15
+JNJ,Johnson & Johnson,Healthcare,New Brunswick,USA,40.4862,-74.4518,370.0,Public Exchange Filings,2026-01-15
+UNH,UnitedHealth Group Inc.,Healthcare,Minnetonka,USA,44.9133,-93.5036,510.0,Public Exchange Filings,2026-01-15
+ABBV,AbbVie Inc.,Healthcare,North Chicago,USA,42.3256,-87.8412,330.0,Public Exchange Filings,2026-01-15
+MRK,Merck & Co. Inc.,Healthcare,Rahway,USA,40.6082,-74.2776,265.0,Public Exchange Filings,2026-01-15
+PFE,Pfizer Inc.,Healthcare,New York,USA,40.7128,-74.0060,150.0,Public Exchange Filings,2026-01-15
+TMO,Thermo Fisher Scientific Inc.,Healthcare,Waltham,USA,42.3765,-71.2356,210.0,Public Exchange Filings,2026-01-15
+ABT,Abbott Laboratories,Healthcare,Abbott Park,USA,42.3022,-87.8934,205.0,Public Exchange Filings,2026-01-15
+DHR,Danaher Corporation,Healthcare,Washington,USA,38.9072,-77.0369,175.0,Public Exchange Filings,2026-01-15
+AMGN,Amgen Inc.,Healthcare,Thousand Oaks,USA,34.1706,-118.8376,155.0,Public Exchange Filings,2026-01-15
+ISRG,Intuitive Surgical Inc.,Healthcare,Sunnyvale,USA,37.3688,-122.0363,195.0,Public Exchange Filings,2026-01-15
+NVO,Novo Nordisk A/S,Healthcare,Bagsvaerd,Denmark,55.7611,12.4567,385.0,Public Exchange Filings,2026-01-15
+ROG.SW,Roche Holding AG,Healthcare,Basel,Switzerland,47.5596,7.5886,235.0,Public Exchange Filings,2026-01-15
+NVS,Novartis AG,Healthcare,Basel,Switzerland,47.5596,7.5886,215.0,Public Exchange Filings,2026-01-15
+AZN,AstraZeneca PLC,Healthcare,Cambridge,UK,52.2053,0.1218,220.0,Public Exchange Filings,2026-01-15
+SNY,Sanofi,Healthcare,Paris,France,48.8566,2.3522,125.0,Public Exchange Filings,2026-01-15
+GSK,GSK plc,Healthcare,London,UK,51.5074,-0.1278,74.0,Public Exchange Filings,2026-01-15
+4502.T,Takeda Pharmaceutical Co.,Healthcare,Tokyo,Japan,35.6762,139.6503,46.0,Public Exchange Filings,2026-01-15
+CSL.AX,CSL Limited,Healthcare,Melbourne,Australia,-37.8136,144.9631,88.0,Public Exchange Filings,2026-01-15
+PG,Procter & Gamble Company,Consumer,Cincinnati,USA,39.1031,-84.5120,395.0,Public Exchange Filings,2026-01-15
+KO,The Coca-Cola Company,Consumer,Atlanta,USA,33.7490,-84.3880,275.0,Public Exchange Filings,2026-01-15
+PEP,PepsiCo Inc.,Consumer,Purchase,USA,41.0407,-73.7145,215.0,Public Exchange Filings,2026-01-15
+PM,Philip Morris International,Consumer,Stamford,USA,41.0534,-73.5387,195.0,Public Exchange Filings,2026-01-15
+MO,Altria Group Inc.,Consumer,Richmond,USA,37.5407,-77.4360,92.0,Public Exchange Filings,2026-01-15
+MDLZ,Mondelez International Inc.,Consumer,Chicago,USA,41.8781,-87.6298,84.0,Public Exchange Filings,2026-01-15
+CL,Colgate-Palmolive Company,Consumer,New York,USA,40.7128,-74.0060,76.0,Public Exchange Filings,2026-01-15
+NKE,NIKE Inc.,Consumer,Beaverton,USA,45.4871,-122.8037,115.0,Public Exchange Filings,2026-01-15
+SBUX,Starbucks Corporation,Consumer,Seattle,USA,47.6062,-122.3321,110.0,Public Exchange Filings,2026-01-15
+MCD,McDonald's Corporation,Consumer,Chicago,USA,41.8781,-87.6298,215.0,Public Exchange Filings,2026-01-15
+NSRGY,Nestle S.A.,Consumer,Vevey,Switzerland,46.4628,6.8419,235.0,Public Exchange Filings,2026-01-15
+UL,Unilever PLC,Consumer,London,UK,51.5074,-0.1278,145.0,Public Exchange Filings,2026-01-15
+DEO,Diageo plc,Consumer,London,UK,51.5074,-0.1278,68.0,Public Exchange Filings,2026-01-15
+OR.PA,L'Oreal S.A.,Consumer,Clichy,France,48.9044,2.3064,195.0,Public Exchange Filings,2026-01-15
+MC.PA,LVMH Moet Hennessy Louis Vuitton,Consumer,Paris,France,48.8566,2.3522,340.0,Public Exchange Filings,2026-01-15
+BUD,Anheuser-Busch InBev SA/NV,Consumer,Leuven,Belgium,50.8798,4.7005,112.0,Public Exchange Filings,2026-01-15
+HINDUNILVR.NS,Hindustan Unilever Limited,Consumer,Mumbai,India,19.0760,72.8777,68.0,Public Exchange Filings,2026-01-15
+CAT,Caterpillar Inc.,Industrials,Irving,USA,32.8140,-96.9489,185.0,Public Exchange Filings,2026-01-15
+GE,GE Aerospace,Industrials,Evendale,USA,39.2456,-84.4227,205.0,Public Exchange Filings,2026-01-15
+HON,Honeywell International Inc.,Industrials,Charlotte,USA,35.2271,-80.8431,145.0,Public Exchange Filings,2026-01-15
+RTX,RTX Corporation,Industrials,Arlington,USA,38.8816,-77.0910,165.0,Public Exchange Filings,2026-01-15
+LMT,Lockheed Martin Corporation,Industrials,Bethesda,USA,38.9847,-77.0947,125.0,Public Exchange Filings,2026-01-15
+BA,The Boeing Company,Industrials,Arlington,USA,38.8816,-77.0910,115.0,Public Exchange Filings,2026-01-15
+UNP,Union Pacific Corporation,Industrials,Omaha,USA,41.2565,-95.9345,145.0,Public Exchange Filings,2026-01-15
+UPS,United Parcel Service Inc.,Industrials,Atlanta,USA,33.7490,-84.3880,110.0,Public Exchange Filings,2026-01-15
+DE,Deere & Company,Industrials,Moline,USA,41.5067,-90.5151,120.0,Public Exchange Filings,2026-01-15
+ETN,Eaton Corporation plc,Industrials,Dublin,Ireland,53.3498,-6.2603,135.0,Public Exchange Filings,2026-01-15
+SIE.DE,Siemens AG,Industrials,Munich,Germany,48.1351,11.5820,160.0,Public Exchange Filings,2026-01-15
+AIR.PA,Airbus SE,Industrials,Leiden,Netherlands,52.1601,4.4970,130.0,Public Exchange Filings,2026-01-15
+SU.PA,Schneider Electric SE,Industrials,Rueil-Malmaison,France,48.8768,2.1893,145.0,Public Exchange Filings,2026-01-15
+ABBN.SW,ABB Ltd,Industrials,Zurich,Switzerland,47.3769,8.5417,102.0,Public Exchange Filings,2026-01-15
+RR.L,Rolls-Royce Holdings plc,Industrials,London,UK,51.5074,-0.1278,64.0,Public Exchange Filings,2026-01-15
+6501.T,Hitachi Ltd.,Industrials,Tokyo,Japan,35.6762,139.6503,115.0,Public Exchange Filings,2026-01-15
+LT.NS,Larsen & Toubro Limited,Industrials,Mumbai,India,19.0760,72.8777,58.0,Public Exchange Filings,2026-01-15
+VZ,Verizon Communications Inc.,Telecom,New York,USA,40.7128,-74.0060,175.0,Public Exchange Filings,2026-01-15
+T,AT&T Inc.,Telecom,Dallas,USA,32.7767,-96.7970,165.0,Public Exchange Filings,2026-01-15
+TMUS,T-Mobile US Inc.,Telecom,Bellevue,USA,47.6101,-122.2015,260.0,Public Exchange Filings,2026-01-15
+CMCSA,Comcast Corporation,Telecom,Philadelphia,USA,39.9526,-75.1652,155.0,Public Exchange Filings,2026-01-15
+VOD,Vodafone Group Plc,Telecom,Newbury,UK,51.4014,-1.3230,24.0,Public Exchange Filings,2026-01-15
+DTE.DE,Deutsche Telekom AG,Telecom,Bonn,Germany,50.7374,7.0982,155.0,Public Exchange Filings,2026-01-15
+ORA.PA,Orange S.A.,Telecom,Issy-les-Moulineaux,France,48.8245,2.2743,29.0,Public Exchange Filings,2026-01-15
+TEF,Telefonica S.A.,Telecom,Madrid,Spain,40.4168,-3.7038,25.0,Public Exchange Filings,2026-01-15
+9432.T,Nippon Telegraph and Telephone,Telecom,Tokyo,Japan,35.6762,139.6503,95.0,Public Exchange Filings,2026-01-15
+9433.T,KDDI Corporation,Telecom,Tokyo,Japan,35.6762,139.6503,68.0,Public Exchange Filings,2026-01-15
+BHARTIARTL.NS,Bharti Airtel Limited,Telecom,New Delhi,India,28.6139,77.2090,112.0,Public Exchange Filings,2026-01-15
+AMX,America Movil S.A.B. de C.V.,Telecom,Mexico City,Mexico,19.4326,-99.1332,48.0,Public Exchange Filings,2026-01-15
+TLS.AX,Telstra Group Limited,Telecom,Melbourne,Australia,-37.8136,144.9631,30.0,Public Exchange Filings,2026-01-15
+WMT,Walmart Inc.,Retail,Bentonville,USA,36.3729,-94.2088,740.0,Public Exchange Filings,2026-01-15
+COST,Costco Wholesale Corporation,Retail,Issaquah,USA,47.5301,-122.0326,420.0,Public Exchange Filings,2026-01-15
+HD,The Home Depot Inc.,Retail,Atlanta,USA,33.7490,-84.3880,405.0,Public Exchange Filings,2026-01-15
+LOW,Lowe's Companies Inc.,Retail,Mooresville,USA,35.5849,-80.8101,148.0,Public Exchange Filings,2026-01-15
+TGT,Target Corporation,Retail,Minneapolis,USA,44.9778,-93.2650,65.0,Public Exchange Filings,2026-01-15
+TJX,The TJX Companies Inc.,Retail,Framingham,USA,42.2793,-71.4162,135.0,Public Exchange Filings,2026-01-15
+BKNG,Booking Holdings Inc.,Retail,Norwalk,USA,41.1177,-73.4082,165.0,Public Exchange Filings,2026-01-15
+BABA,Alibaba Group Holding Limited,Retail,Hangzhou,China,30.2741,120.1551,210.0,Public Exchange Filings,2026-01-15
+JD,JD.com Inc.,Retail,Beijing,China,39.9042,116.4074,58.0,Public Exchange Filings,2026-01-15
+PDD,PDD Holdings Inc.,Retail,Dublin,Ireland,53.3498,-6.2603,145.0,Public Exchange Filings,2026-01-15
+MELI,MercadoLibre Inc.,Retail,Montevideo,Uruguay,-34.9011,-56.1645,98.0,Public Exchange Filings,2026-01-15
+9983.T,Fast Retailing Co. Ltd.,Retail,Yamaguchi,Japan,34.1785,131.4737,102.0,Public Exchange Filings,2026-01-15
+ITX.MC,Industria de Diseno Textil,Retail,Arteixo,Spain,43.3052,-8.5067,165.0,Public Exchange Filings,2026-01-15
+TSCO.L,Tesco PLC,Retail,Welwyn Garden City,UK,51.8027,-0.2073,32.0,Public Exchange Filings,2026-01-15
+LIN,Linde plc,Materials,Woking,UK,51.3168,-0.5600,225.0,Public Exchange Filings,2026-01-15
+SHW,The Sherwin-Williams Company,Materials,Cleveland,USA,41.4993,-81.6944,92.0,Public Exchange Filings,2026-01-15
+APD,Air Products and Chemicals,Materials,Allentown,USA,40.6084,-75.4902,68.0,Public Exchange Filings,2026-01-15
+ECL,Ecolab Inc.,Materials,Saint Paul,USA,44.9537,-93.0900,72.0,Public Exchange Filings,2026-01-15
+NEM,Newmont Corporation,Materials,Denver,USA,39.7392,-104.9903,52.0,Public Exchange Filings,2026-01-15
+FCX,Freeport-McMoRan Inc.,Materials,Phoenix,USA,33.4484,-112.0740,62.0,Public Exchange Filings,2026-01-15
+NUE,Nucor Corporation,Materials,Charlotte,USA,35.2271,-80.8431,34.0,Public Exchange Filings,2026-01-15
+BHP,BHP Group Limited,Materials,Melbourne,Australia,-37.8136,144.9631,135.0,Public Exchange Filings,2026-01-15
+RIO,Rio Tinto Group,Materials,London,UK,51.5074,-0.1278,105.0,Public Exchange Filings,2026-01-15
+VALE,Vale S.A.,Materials,Rio de Janeiro,Brazil,-22.9068,-43.1729,46.0,Public Exchange Filings,2026-01-15
+GLEN.L,Glencore plc,Materials,Baar,Switzerland,47.1963,8.5295,58.0,Public Exchange Filings,2026-01-15
+BAS.DE,BASF SE,Materials,Ludwigshafen,Germany,49.4774,8.4452,44.0,Public Exchange Filings,2026-01-15
+AI.PA,Air Liquide S.A.,Materials,Paris,France,48.8566,2.3522,98.0,Public Exchange Filings,2026-01-15
+TATASTEEL.NS,Tata Steel Limited,Materials,Mumbai,India,19.0760,72.8777,22.0,Public Exchange Filings,2026-01-15
+PKX,POSCO Holdings Inc.,Materials,Pohang,South Korea,36.0190,129.3435,20.0,Public Exchange Filings,2026-01-15
+MICR,MicroCloud Precision Corp.,Tech,Boston,USA,42.3601,-71.0589,12.5,Public Exchange Filings,2026-01-15
+MCHP,Microchip Technology Inc.,Tech,Chandler,USA,33.3062,-111.8413,34.0,Public Exchange Filings,2026-01-15
+SMCI,Super Micro Computer Inc.,Tech,San Jose,USA,37.3382,-121.8863,24.0,Public Exchange Filings,2026-01-15

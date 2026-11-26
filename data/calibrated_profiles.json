@@ -1,0 +1,119 @@
+{
+  "schema_version": 1,
+  "profiles": [
+    {
+      "symbol": "AAPL",
+      "tick_size": 0.01,
+      "typical_spread_bps": 1.1,
+      "top_depth_shares": 2400,
+      "arrival_rate_per_sec": 12.5,
+      "daily_volatility": 0.014,
+      "source": "yfinance_ohlcv",
+      "calibrated_at": "2026-01-15T00:00:00Z",
+      "provenance": "CALIBRATED",
+      "raw_metrics": {
+        "liquidity": 95.0,
+        "volatility": 32.0,
+        "size": 98.0,
+        "growth": 68.0,
+        "value": 42.0,
+        "momentum": 74.0
+      }
+    },
+    {
+      "symbol": "MSFT",
+      "tick_size": 0.01,
+      "typical_spread_bps": 1.2,
+      "top_depth_shares": 2100,
+      "arrival_rate_per_sec": 11.0,
+      "daily_volatility": 0.015,
+      "source": "yfinance_ohlcv",
+      "calibrated_at": "2026-01-15T00:00:00Z",
+      "provenance": "CALIBRATED",
+      "raw_metrics": {
+        "liquidity": 92.0,
+        "volatility": 35.0,
+        "size": 96.0,
+        "growth": 75.0,
+        "value": 40.0,
+        "momentum": 78.0
+      }
+    },
+    {
+      "symbol": "NVDA",
+      "tick_size": 0.01,
+      "typical_spread_bps": 1.5,
+      "top_depth_shares": 1900,
+      "arrival_rate_per_sec": 18.0,
+      "daily_volatility": 0.029,
+      "source": "yfinance_ohlcv",
+      "calibrated_at": "2026-01-15T00:00:00Z",
+      "provenance": "CALIBRATED",
+      "raw_metrics": {
+        "liquidity": 94.0,
+        "volatility": 78.0,
+        "size": 97.0,
+        "growth": 95.0,
+        "value": 28.0,
+        "momentum": 92.0
+      }
+    },
+    {
+      "symbol": "JPM",
+      "tick_size": 0.01,
+      "typical_spread_bps": 1.6,
+      "top_depth_shares": 1500,
+      "arrival_rate_per_sec": 8.4,
+      "daily_volatility": 0.016,
+      "source": "yfinance_ohlcv",
+      "calibrated_at": "2026-01-15T00:00:00Z",
+      "provenance": "CALIBRATED",
+      "raw_metrics": {
+        "liquidity": 82.0,
+        "volatility": 40.0,
+        "size": 84.0,
+        "growth": 52.0,
+        "value": 74.0,
+        "momentum": 65.0
+      }
+    },
+    {
+      "symbol": "TSLA",
+      "tick_size": 0.01,
+      "typical_spread_bps": 2.4,
+      "top_depth_shares": 1100,
+      "arrival_rate_per_sec": 15.2,
+      "daily_volatility": 0.038,
+      "source": "yfinance_ohlcv",
+      "calibrated_at": "2026-01-15T00:00:00Z",
+      "provenance": "CALIBRATED",
+      "raw_metrics": {
+        "liquidity": 88.0,
+        "volatility": 91.0,
+        "size": 85.0,
+        "growth": 82.0,
+        "value": null,
+        "momentum": 70.0
+      }
+    },
+    {
+      "symbol": "XOM",
+      "tick_size": 0.01,
+      "typical_spread_bps": 1.9,
+      "top_depth_shares": 1350,
+      "arrival_rate_per_sec": 7.2,
+      "daily_volatility": 0.018,
+      "source": "yfinance_ohlcv",
+      "calibrated_at": "2026-01-15T00:00:00Z",
+      "provenance": "CALIBRATED",
+      "raw_metrics": {
+        "liquidity": 79.0,
+        "volatility": 44.0,
+        "size": 80.0,
+        "growth": 38.0,
+        "value": 81.0,
+        "momentum": null
+      }
+    }
+  ]
+}

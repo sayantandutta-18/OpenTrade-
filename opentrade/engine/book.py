@@ -24,6 +24,7 @@ class OrderType(StrEnum):
     IOC = "IOC"
     FOK = "FOK"
     POST_ONLY = "POST_ONLY"
+    STOP = "STOP"
 
 
 class STPPolicy(StrEnum):
@@ -46,6 +47,30 @@ class Order:
     owner_id: str | None = None
     timestamp_seq: int = 0
     order_type: OrderType = OrderType.LIMIT
+    display_qty: int | None = None
+    hidden_qty: int = 0
+
+
+@dataclass(frozen=True)
+class StopOrder:
+    """Pending stop-market order waiting for trade trigger."""
+
+    order_id: int
+    side: Side
+    stop_price_ticks: int
+    qty: int
+    owner_id: str | None = None
+    timestamp_seq: int = 0
+
+
+@dataclass(frozen=True)
+class QueuePosition:
+    """Queue position snapshot for a resting order."""
+
+    orders_ahead: int
+    qty_ahead: int
+    price_ticks: int
+    side: Side
 
 
 @dataclass(frozen=True)
@@ -72,13 +97,18 @@ class DepthLevel:
 class OrderBook:
     """Price-time priority limit order book using FIFO deques and integer ticks."""
 
-    def __init__(self) -> None:
+    def __init__(self, lot_size: int = 1) -> None:
         """Initialize an empty order book with deterministic sequence counters."""
+        if isinstance(lot_size, bool) or not isinstance(lot_size, int) or lot_size <= 0:
+            raise ValueError(f"lot_size must be a positive integer, got {lot_size!r}")
+        self.lot_size: int = lot_size
         self._bids: dict[int, deque[Order]] = {}
         self._asks: dict[int, deque[Order]] = {}
         self._bid_prices: list[int] = []  # Sorted ascending; best bid is [-1]
         self._ask_prices: list[int] = []  # Sorted descending; best ask is [-1]
         self._orders: dict[int, Order] = {}
+        self._stop_orders: list[StopOrder] = []
+        self.last_trade_price_ticks: int | None = None
         self._next_id: int = 1
         self._seq: int = 0
         self.event_log: list[tuple[Any, ...]] = []
@@ -140,6 +170,21 @@ class OrderBook:
             return sum(o.remaining_qty for o in self._orders.values())
         return sum(o.remaining_qty for o in self._orders.values() if o.side is side)
 
+    def resting_order_ids(self) -> list[int]:
+        """Return all currently resting order IDs in insertion/dict order."""
+        return list(self._orders.keys())
+
+    def top_of_book_depth(self) -> int:
+        """Return combined visible quantity at best bid and best ask."""
+        total = 0
+        bid = self.best_bid()
+        ask = self.best_ask()
+        if bid is not None:
+            total += sum(o.remaining_qty for o in self._bids[bid])
+        if ask is not None:
+            total += sum(o.remaining_qty for o in self._asks[ask])
+        return total
+
     def add_resting_order(self, order: Order) -> None:
         """Insert a resting order at the tail of its price level FIFO queue."""
         levels = self._bids if order.side is Side.BUY else self._asks
@@ -190,23 +235,67 @@ class OrderBook:
         return self._bid_prices, self._bids
 
     def pop_filled_head(self, side: Side, price_ticks: int) -> Order:
-        """Pop and unregister the head order at a price level."""
+        """Pop the head order at a price level, replenishing iceberg reserve if present."""
         levels = self._bids if side is Side.BUY else self._asks
         order = levels[price_ticks].popleft()
+        if order.hidden_qty > 0 and order.display_qty:
+            replenish = min(order.hidden_qty, order.display_qty)
+            order.remaining_qty = replenish
+            order.hidden_qty -= replenish
+            order.timestamp_seq = self.next_seq()
+            levels[price_ticks].append(order)
+            self.record_event(("ICEBERG_REPLENISH", order.timestamp_seq, order.order_id, replenish))
+            return order
         self._orders.pop(order.order_id, None)
         if not levels[price_ticks]:
             self.remove_empty_level(side, price_ticks)
         return order
 
+    def add_stop_order(self, stop_order: StopOrder) -> None:
+        """Register a pending stop order."""
+        self._stop_orders.append(stop_order)
+
+    def cancel_stop_order(self, order_id: int) -> StopOrder | None:
+        """Cancel and return a pending stop order by ID, or None if absent."""
+        for idx, stop_order in enumerate(self._stop_orders):
+            if stop_order.order_id == order_id:
+                return self._stop_orders.pop(idx)
+        return None
+
+    def pop_triggered_stops(self, trade_price_ticks: int) -> list[StopOrder]:
+        """Remove and return stop orders triggered by trade_price_ticks in FIFO order."""
+        triggered: list[StopOrder] = []
+        remaining: list[StopOrder] = []
+        for stop_order in self._stop_orders:
+            is_buy_hit = (
+                stop_order.side is Side.BUY and trade_price_ticks >= stop_order.stop_price_ticks
+            )
+            is_sell_hit = (
+                stop_order.side is Side.SELL and trade_price_ticks <= stop_order.stop_price_ticks
+            )
+            if is_buy_hit or is_sell_hit:
+                triggered.append(stop_order)
+            else:
+                remaining.append(stop_order)
+        self._stop_orders = remaining
+        return triggered
+
     def queue_position(self, order_id: int) -> int | None:
         """Return 0-indexed FIFO queue position at the order's price level, or None."""
+        qp = self.tagged_queue_position(order_id)
+        return qp.orders_ahead if qp is not None else None
+
+    def tagged_queue_position(self, order_id: int) -> QueuePosition | None:
+        """Return QueuePosition (orders_ahead, qty_ahead, price_ticks, side) for a resting order."""
         order = self._orders.get(order_id)
         if order is None:
             return None
         levels = self._bids if order.side is Side.BUY else self._asks
+        qty_ahead = 0
         for idx, candidate in enumerate(levels[order.price_ticks]):
             if candidate.order_id == order_id:
-                return idx
+                return QueuePosition(idx, qty_ahead, order.price_ticks, order.side)
+            qty_ahead += candidate.remaining_qty
         return None
 
     def depth_snapshot(self, levels: int = 10) -> tuple[list[DepthLevel], list[DepthLevel]]:

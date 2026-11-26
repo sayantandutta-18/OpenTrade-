@@ -1,1 +1,40 @@
-{}
+{
+  "presets": [
+    {
+      "id": "global_banks",
+      "name": "Global Banks",
+      "description": "Major global commercial and investment banks across US, Europe, and Asia.",
+      "symbols": ["JPM", "BAC", "HSBC", "UBS", "MUFG", "HDFCBANK.NS"]
+    },
+    {
+      "id": "us_mega_tech",
+      "name": "US Mega-Cap Tech",
+      "description": "Leading US technology, cloud, and semiconductor platforms.",
+      "symbols": ["AAPL", "MSFT", "NVDA", "GOOGL", "AMZN", "META"]
+    },
+    {
+      "id": "semiconductor_chain",
+      "name": "Semiconductor Chain",
+      "description": "Global semiconductor design, foundry, and equipment leaders.",
+      "symbols": ["NVDA", "TSM", "ASML", "AMD", "AVGO", "TXN"]
+    },
+    {
+      "id": "global_energy",
+      "name": "Global Energy",
+      "description": "Integrated oil, gas, and energy transition majors.",
+      "symbols": ["XOM", "CVX", "SHEL", "TTE", "BP", "RELIANCE.NS"]
+    },
+    {
+      "id": "healthcare_leaders",
+      "name": "Healthcare Leaders",
+      "description": "Global pharmaceuticals, biotech, and medical devices.",
+      "symbols": ["LLY", "JNJ", "NVO", "ROG.SW", "AZN", "MRK"]
+    },
+    {
+      "id": "global_autos",
+      "name": "Global Autos",
+      "description": "Traditional and electric vehicle manufacturers worldwide.",
+      "symbols": ["TSLA", "TM", "VWAGY", "GM", "F", "BYDDY"]
+    }
+  ]
+}

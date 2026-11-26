@@ -7,6 +7,7 @@ import json
 import sqlite3
 import uuid
 from datetime import UTC, datetime
+from pathlib import Path
 from typing import Any
 
 from opentrade.config import (
@@ -16,11 +17,17 @@ from opentrade.config import (
     compute_fingerprint,
     parse_provenance,
 )
+from opentrade.engine.book import Side
+from opentrade.engine.impact_analytics import measure_impact_decay, run_impact_sweep
 from opentrade.engine.runner import run_simulation
 from opentrade.services.auth import authenticate_session, extract_session_token
 from opentrade.services.csrf import verify_csrf_token
 from opentrade.services.errors import AppError, NotFoundError, UnauthenticatedError
+from opentrade.services.simulator import list_available_profiles, preview_book_and_inject
+from opentrade.storage.db import get_connection
 from opentrade.storage.repositories import RunRepository, RunRow
+
+__all__ = ["list_available_profiles", "preview_book_and_inject"]
 
 
 def require_user_run(conn: sqlite3.Connection, run_id: str, user_id: int) -> RunRow:
@@ -276,3 +283,113 @@ def list_runs(
         page = rows[:clamped]
         return page, page[-1].created_at
     return rows, None
+
+
+def save_impact_run(
+    conn: sqlite3.Connection | None,
+    user_id: int | None,
+    is_verified: bool,
+    config: RunConfig,
+    name: str = "Impact Run",
+    side: str = "BUY",
+    created_at: str | None = None,
+) -> tuple[dict[str, Any], bool]:
+    """Run impact sweep + decay and persist only for authenticated verified users (AC-21)."""
+    parsed_side = Side(side.upper())
+    sweep = run_impact_sweep(
+        profile_id=config.profile_id,
+        seed=config.seed,
+        sizes=config.sizes,
+        side=parsed_side,
+    )
+    decay = measure_impact_decay(
+        profile_id=config.profile_id,
+        seed=config.seed,
+        qty=max(config.sizes),
+        side=parsed_side,
+    )
+    results: dict[str, Any] = {
+        "impact": [pt.to_dict() for pt in sweep.points],
+        "fit": sweep.fit.to_dict(),
+        "book_capped": sweep.book_capped,
+        "max_available_depth": sweep.max_available_depth,
+        "decay": decay.to_dict(),
+        "event_log_sha256": sweep.event_log_sha256,
+    }
+    prov = parse_provenance(sweep.provenance.value)
+    fp = compute_fingerprint(config)
+
+    if conn is not None and user_id is not None and is_verified:
+        row = create_run(
+            conn=conn,
+            run_id=str(uuid.uuid4()),
+            user_id=user_id,
+            name=name,
+            seed=config.seed,
+            config=config.to_dict(),
+            fingerprint=fp,
+            provenance=prov.value,
+            results=results,
+            schema_version=RESULT_SCHEMA_VERSION,
+            created_at=created_at,
+        )
+        return format_run_dict(row), True
+
+    now_str = created_at or datetime.now(UTC).isoformat()
+    return {
+        "id": None,
+        "name": name,
+        "seed": config.seed,
+        "fingerprint": fp,
+        "provenance": prov.value,
+        "schema_version": RESULT_SCHEMA_VERSION,
+        "created_at": now_str,
+        "config": config.to_dict(),
+        "results": results,
+    }, False
+
+
+def save_impact_run_db_path(
+    db_path: str | Path | None,
+    user_id: int | None,
+    is_verified: bool,
+    config: RunConfig,
+    name: str = "Impact Run",
+    side: str = "BUY",
+) -> tuple[dict[str, Any], bool]:
+    """Convenience wrapper opening a SQLite connection when persisting from UI."""
+    if user_id is None or not is_verified:
+        return save_impact_run(None, user_id, is_verified, config, name=name, side=side)
+    conn = get_connection(db_path)
+    try:
+        return save_impact_run(conn, user_id, is_verified, config, name=name, side=side)
+    finally:
+        conn.close()
+
+
+def list_runs_db_path(
+    db_path: str | Path | None, user_id: int | None, limit: int = 50
+) -> list[dict[str, Any]]:
+    """UI-safe helper returning formatted saved runs for a user."""
+    if user_id is None:
+        return []
+    conn = get_connection(db_path)
+    try:
+        items, _ = list_runs(conn, user_id=user_id, limit=limit)
+        return [format_run_dict(r) for r in items]
+    finally:
+        conn.close()
+
+
+def rerun_by_id_db_path(db_path: str | Path | None, run_id: str, user_id: int) -> dict[str, Any]:
+    """UI-safe helper re-running a saved run deterministically by ID (T20.1)."""
+    conn = get_connection(db_path)
+    try:
+        saved = get_run(conn, run_id=run_id, user_id=user_id)
+        cfg = RunConfig(**json.loads(saved.config_json))
+        rerun_dict, _ = save_impact_run(
+            None, user_id=user_id, is_verified=False, config=cfg, name=f"Re-run: {saved.name}"
+        )
+        return rerun_dict
+    finally:
+        conn.close()

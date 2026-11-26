@@ -1,1 +1,56 @@
-[]
+[
+  {
+    "title": "Apple expands custom silicon packaging capacity for AI inference",
+    "source": "OpenTrade Demo Wire",
+    "url": "https://example.com/demo/aapl-silicon",
+    "published_at": "2026-01-15T14:00:00Z",
+    "summary": "Hardware supply chain updates point to higher wafer utilization in Q1.",
+    "symbols": ["AAPL", "TSM"],
+    "sector": "Tech"
+  },
+  {
+    "title": "JPMorgan reports steady institutional fixed-income and equities trading flow",
+    "source": "OpenTrade Demo Wire",
+    "url": "https://example.com/demo/jpm-trading",
+    "published_at": "2026-01-15T12:30:00Z",
+    "summary": "Tighter bid-ask spreads observed across large-cap financials during morning session.",
+    "symbols": ["JPM", "BAC", "GS"],
+    "sector": "Financials"
+  },
+  {
+    "title": "NVIDIA and data-center partners outline next-generation interconnect specs",
+    "source": "OpenTrade Demo Wire",
+    "url": "https://example.com/demo/nvda-interconnect",
+    "published_at": "2026-01-15T10:15:00Z",
+    "summary": "Lower latency fabric targets multi-node model serving workloads.",
+    "symbols": ["NVDA", "AVGO", "AMD"],
+    "sector": "Tech"
+  },
+  {
+    "title": "Exxon Mobil and Shell outline downstream refining maintenance schedule",
+    "source": "OpenTrade Demo Wire",
+    "url": "https://example.com/demo/energy-refining",
+    "published_at": "2026-01-15T09:00:00Z",
+    "summary": "Planned turnarounds expected to keep regional distillate inventories balanced.",
+    "symbols": ["XOM", "CVX", "SHEL"],
+    "sector": "Energy"
+  },
+  {
+    "title": "Tesla updates regional delivery mix and battery cell sourcing guidance",
+    "source": "OpenTrade Demo Wire",
+    "url": "https://example.com/demo/tsla-deliveries",
+    "published_at": "2026-01-15T07:45:00Z",
+    "summary": "Production ramp remains focused on cost per kilowatt-hour reductions.",
+    "symbols": ["TSLA", "GM", "TM"],
+    "sector": "Auto"
+  },
+  {
+    "title": "Eli Lilly and Novo Nordisk expand manufacturing lines for metabolic therapies",
+    "source": "OpenTrade Demo Wire",
+    "url": "https://example.com/demo/healthcare-capacity",
+    "published_at": "2026-01-14T20:00:00Z",
+    "summary": "New sterile fill-finish facilities scheduled to come online this year.",
+    "symbols": ["LLY", "NVO", "MRK"],
+    "sector": "Healthcare"
+  }
+]

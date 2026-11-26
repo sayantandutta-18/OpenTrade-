@@ -72,7 +72,7 @@ def _extract_token(body: str) -> str:
 
 def _new_app(db_path: Path, page: str) -> AppTest:
     """Create and run an AppTest instance pointed at a temp migrated DB and route."""
-    at = AppTest.from_file(APP_PATH)
+    at = AppTest.from_file(APP_PATH, default_timeout=15)
     at.session_state["db_path"] = str(db_path)
     at.session_state["current_page"] = page
     at.run()

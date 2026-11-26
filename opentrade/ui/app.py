@@ -2,12 +2,8 @@
 
 import streamlit as st
 
-from opentrade.config import Provenance
-from opentrade.ui.components.badge import (
-    DEMO_MODE_BANNER_TEXT,
-    render_prototype_banner,
-    render_provenance_badge,
-)
+from opentrade.ui.components.badge import render_prototype_banner
+from opentrade.ui.pages.analyst import render_analyst_page
 from opentrade.ui.pages.auth_pages import (
     render_forgot_page,
     render_login_page,
@@ -15,40 +11,41 @@ from opentrade.ui.pages.auth_pages import (
     render_reset_page,
     render_verify_page,
 )
+from opentrade.ui.pages.correlation import render_correlation_page
 from opentrade.ui.pages.home import render_home_page
+from opentrade.ui.pages.impact_lab import render_impact_lab_page
+from opentrade.ui.pages.market_data import render_market_data_page
+from opentrade.ui.pages.news_lab import render_news_lab_page
+from opentrade.ui.pages.profiles import render_profiles_page
+from opentrade.ui.pages.run_history import render_run_history_page
+from opentrade.ui.pages.simulator import render_simulator_page
+from opentrade.ui.pages.summary import render_summary_page
+from opentrade.ui.pages.tour import render_tour_page
+from opentrade.ui.pages.universe_map import render_universe_map_page
+from opentrade.ui.pages.validation import render_validation_page
 from opentrade.ui.state import (
-    DEMO_SEED_KEY,
+    ANALYST_PAGE,
+    CORRELATION_PAGE,
     FORGOT_PAGE,
     HOME_PAGE,
+    IMPACT_LAB_PAGE,
     LOGIN_PAGE,
-    MODE_KEY,
+    MARKET_DATA_PAGE,
+    NEWS_LAB_PAGE,
     PAGE_KEY,
+    PROFILES_PAGE,
     REGISTER_PAGE,
     RESET_PAGE,
+    RUN_HISTORY_PAGE,
     SIMULATOR_PAGE,
-    USER_KEY,
+    SUMMARY_PAGE,
+    TOUR_PAGE,
+    UNIVERSE_MAP_PAGE,
+    VALIDATION_PAGE,
     VERIFY_PAGE,
     init_session_state,
-    navigate_to,
 )
 from opentrade.ui.theme import apply_theme
-
-
-def _render_simulator_placeholder() -> None:
-    """Render the simulator landing state until Phase 1+ simulator UI."""
-    user = st.session_state.get(USER_KEY)
-    if user is None:
-        st.info(DEMO_MODE_BANNER_TEXT)
-    elif not user.get("verified"):
-        st.warning("Verify your email to save runs")
-        st.button("Verify email", on_click=navigate_to, args=(VERIFY_PAGE,))
-
-    st.header("Simulator")
-    seed = st.session_state.get(DEMO_SEED_KEY, 42)
-    mode = st.session_state.get(MODE_KEY, "DEMO")
-    render_provenance_badge(Provenance.SYNTHETIC, mode=str(mode))
-    st.markdown(f"Active simulation seed: `{seed}`")
-    st.button("Back to Home", on_click=navigate_to, args=(HOME_PAGE,))
 
 
 def main() -> None:
@@ -67,7 +64,18 @@ def main() -> None:
         VERIFY_PAGE: render_verify_page,
         FORGOT_PAGE: render_forgot_page,
         RESET_PAGE: render_reset_page,
-        SIMULATOR_PAGE: _render_simulator_placeholder,
+        SIMULATOR_PAGE: render_simulator_page,
+        IMPACT_LAB_PAGE: render_impact_lab_page,
+        UNIVERSE_MAP_PAGE: render_universe_map_page,
+        PROFILES_PAGE: render_profiles_page,
+        MARKET_DATA_PAGE: render_market_data_page,
+        NEWS_LAB_PAGE: render_news_lab_page,
+        CORRELATION_PAGE: render_correlation_page,
+        ANALYST_PAGE: render_analyst_page,
+        RUN_HISTORY_PAGE: render_run_history_page,
+        TOUR_PAGE: render_tour_page,
+        SUMMARY_PAGE: render_summary_page,
+        VALIDATION_PAGE: render_validation_page,
     }
     renderer = routes.get(st.session_state[PAGE_KEY], render_home_page)
     renderer()

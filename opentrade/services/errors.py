@@ -79,6 +79,22 @@ class EmailTakenError(AppError):
         )
 
 
+class CompareLimitError(AppError):
+    """Comparison set maximum of 6 companies exceeded (HTTP 422, AC-24)."""
+
+    def __init__(
+        self,
+        message: str = "You can compare up to six companies. Remove one to add another.",
+        request_id: str | None = None,
+    ) -> None:
+        super().__init__(
+            message=message,
+            code="COMPARE_LIMIT",
+            status_code=422,
+            request_id=request_id,
+        )
+
+
 class UnauthenticatedError(AppError):
     """No valid session or authentication token (HTTP 401)."""
 
@@ -149,11 +165,12 @@ class RateLimitedError(AppError):
     def __init__(
         self,
         message: str = "Rate limit exceeded. Please try again later.",
+        code: str = "RATE_LIMITED",
         request_id: str | None = None,
     ) -> None:
         super().__init__(
             message=message,
-            code="RATE_LIMITED",
+            code=code,
             status_code=429,
             request_id=request_id,
         )

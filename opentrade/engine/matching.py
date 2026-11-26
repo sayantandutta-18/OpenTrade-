@@ -8,6 +8,7 @@ from opentrade.engine.book import (
     OrderBook,
     OrderType,
     Side,
+    StopOrder,
     STPPolicy,
 )
 
@@ -33,6 +34,9 @@ def validate_order_inputs(
     order_type: OrderType | str,
     qty: int,
     price_ticks: int | None,
+    lot_size: int = 1,
+    stop_price_ticks: int | None = None,
+    display_qty: int | None = None,
 ) -> tuple[Side, OrderType, int, int]:
     """Validate order inputs and normalize enums; raises ValueError on invalid input."""
     try:
@@ -45,6 +49,19 @@ def validate_order_inputs(
 
     if not _is_strict_int(qty) or qty <= 0:
         raise ValueError(f"qty must be a positive integer, got {qty!r}")
+    if qty % lot_size != 0:
+        raise ValueError(f"qty={qty} must be an exact multiple of lot_size={lot_size}")
+    if display_qty is not None and (not _is_strict_int(display_qty) or display_qty <= 0):
+        raise ValueError(f"display_qty must be a positive integer, got {display_qty!r}")
+
+    if parsed_type is OrderType.STOP:
+        if (
+            stop_price_ticks is None
+            or not _is_strict_int(stop_price_ticks)
+            or stop_price_ticks <= 0
+        ):
+            raise ValueError(f"stop_price_ticks must be positive, got {stop_price_ticks!r}")
+        return parsed_side, parsed_type, qty, stop_price_ticks
 
     if parsed_type is OrderType.MARKET:
         resolved_price = 0 if price_ticks is None else price_ticks
@@ -99,16 +116,37 @@ def submit_order(
     price_ticks: int | None = None,
     owner_id: str | None = None,
     stp_policy: STPPolicy = STPPolicy.CANCEL_NEWEST,
+    display_qty: int | None = None,
+    stop_price_ticks: int | None = None,
 ) -> MatchResult:
     """Validate and submit an order to the book with price-time priority matching."""
     parsed_side, parsed_type, clean_qty, clean_price = validate_order_inputs(
-        side, order_type, qty, price_ticks
+        side,
+        order_type,
+        qty,
+        price_ticks,
+        lot_size=book.lot_size,
+        stop_price_ticks=stop_price_ticks,
+        display_qty=display_qty,
     )
     order_id = book.next_order_id()
     seq = book.next_seq()
     book.record_event(
         ("SUBMIT", seq, order_id, parsed_side.value, parsed_type.value, clean_qty, clean_price)
     )
+
+    if parsed_type is OrderType.STOP:
+        book.add_stop_order(
+            StopOrder(
+                order_id=order_id,
+                side=parsed_side,
+                stop_price_ticks=clean_price,
+                qty=clean_qty,
+                owner_id=owner_id,
+                timestamp_seq=seq,
+            )
+        )
+        return MatchResult(order_id, "RESTING", 0, clean_qty, ())
 
     opp_prices, opp_levels = book.opposing_prices_and_queues(parsed_side)
     opp_side = Side.SELL if parsed_side is Side.BUY else Side.BUY
@@ -169,6 +207,7 @@ def submit_order(
             seq=trade_seq,
         )
         fills.append(fill)
+        book.last_trade_price_ticks = best_opp
         book.record_event(("FILL", trade_seq, resting.order_id, order_id, best_opp, trade_qty))
 
         remaining -= trade_qty
@@ -176,17 +215,32 @@ def submit_order(
         if resting.remaining_qty == 0:
             book.pop_filled_head(opp_side, best_opp)
 
+    if fills and book.last_trade_price_ticks is not None:
+        for triggered in book.pop_triggered_stops(book.last_trade_price_ticks):
+            submit_order(
+                book,
+                side=triggered.side,
+                order_type=OrderType.MARKET,
+                qty=triggered.qty,
+                owner_id=triggered.owner_id,
+                stp_policy=stp_policy,
+            )
+
     filled_qty = clean_qty - remaining
     if remaining > 0 and not stp_canceled and parsed_type in (OrderType.LIMIT, OrderType.POST_ONLY):
+        visible_qty = min(remaining, display_qty) if display_qty is not None else remaining
+        hidden_qty = remaining - visible_qty
         resting_order = Order(
             order_id=order_id,
             side=parsed_side,
             price_ticks=clean_price,
             qty=clean_qty,
-            remaining_qty=remaining,
+            remaining_qty=visible_qty,
             owner_id=owner_id,
             timestamp_seq=seq,
             order_type=parsed_type,
+            display_qty=display_qty,
+            hidden_qty=hidden_qty,
         )
         book.add_resting_order(resting_order)
         status = "PARTIAL" if filled_qty > 0 else "RESTING"
@@ -201,12 +255,16 @@ def submit_order(
 
 
 def cancel_order(book: OrderBook, order_id: int) -> bool:
-    """Cancel a resting order by ID; returns True if canceled, False if not found."""
+    """Cancel a resting or pending stop order by ID; returns True if canceled."""
     removed = book.cancel_resting_order(order_id)
-    if removed is None:
-        return False
-    book.record_event(("CANCEL", book.next_seq(), order_id, removed.remaining_qty, "USER"))
-    return True
+    if removed is not None:
+        book.record_event(("CANCEL", book.next_seq(), order_id, removed.remaining_qty, "USER"))
+        return True
+    removed_stop = book.cancel_stop_order(order_id)
+    if removed_stop is not None:
+        book.record_event(("CANCEL", book.next_seq(), order_id, removed_stop.qty, "STOP"))
+        return True
+    return False
 
 
 def modify_order(

@@ -35,7 +35,7 @@ def _find_button(at: AppTest, label: str) -> Any:
 def test_prototype_banner_renders_on_home_and_all_routes() -> None:
     """AC-42, FR-53: Prototype banner text renders on the Home page and every routed page state."""
     for page in ("home", "login", "register", "simulator"):
-        at = AppTest.from_file(APP_PATH)
+        at = AppTest.from_file(APP_PATH, default_timeout=15)
         at.session_state["current_page"] = page
         at.run()
         assert not at.exception

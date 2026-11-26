@@ -33,6 +33,60 @@ class SliceExecution:
 
 
 @dataclass(frozen=True)
+class InjectionResult:
+    """Result of injecting a single market order against an active book (T3.1)."""
+
+    side: Side
+    requested_qty: int
+    filled_qty: int
+    arrival_mid_ticks: float
+    avg_fill_price_ticks: float
+    slippage_ticks: float
+    slippage_bps: float
+    post_mid_ticks: float
+    fills: tuple[Fill, ...]
+    provenance: EngineProvenance
+
+
+def inject_market_order(
+    book: OrderBook,
+    side: Side,
+    qty: int,
+    provenance: EngineProvenance = EngineProvenance.SYNTHETIC,
+) -> InjectionResult:
+    """Inject a market order and measure slippage strictly against arrival mid (T3.1)."""
+    arrival_mid = book.mid_price_ticks()
+    if arrival_mid is None or arrival_mid <= 0.0:
+        raise ValueError("Cannot measure arrival mid slippage on an empty book")
+
+    res = submit_order(book, side=side, order_type=OrderType.MARKET, qty=qty)
+    post_mid = book.mid_price_ticks() or arrival_mid
+
+    if res.filled_qty > 0:
+        notional = sum(f.price_ticks * f.qty for f in res.fills)
+        avg_fill = notional / res.filled_qty
+    else:
+        avg_fill = arrival_mid
+
+    sign = 1.0 if side is Side.BUY else -1.0
+    slippage_ticks = sign * (avg_fill - arrival_mid)
+    slippage_bps = (slippage_ticks / arrival_mid) * 10_000.0
+
+    return InjectionResult(
+        side=side,
+        requested_qty=qty,
+        filled_qty=res.filled_qty,
+        arrival_mid_ticks=arrival_mid,
+        avg_fill_price_ticks=avg_fill,
+        slippage_ticks=slippage_ticks,
+        slippage_bps=slippage_bps,
+        post_mid_ticks=post_mid,
+        fills=res.fills,
+        provenance=provenance,
+    )
+
+
+@dataclass(frozen=True)
 class ImpactExecutionResult:
     """Aggregated execution result for a sliced parent order."""
 

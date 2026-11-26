@@ -11,6 +11,8 @@ USER_KEY = "user"
 DB_PATH_KEY = "db_path"
 PENDING_EMAIL_KEY = "pending_email"
 SESSION_COOKIE_KEY = "session_cookie"
+COMPARE_SYMBOLS_KEY = "compare_symbols"
+DEMO_WATCHLIST_KEY = "demo_watchlist"
 
 HOME_PAGE = "home"
 LOGIN_PAGE = "login"
@@ -19,6 +21,17 @@ VERIFY_PAGE = "verify"
 FORGOT_PAGE = "forgot"
 RESET_PAGE = "reset"
 SIMULATOR_PAGE = "simulator"
+IMPACT_LAB_PAGE = "impact_lab"
+UNIVERSE_MAP_PAGE = "universe_map"
+PROFILES_PAGE = "profiles"
+MARKET_DATA_PAGE = "market_data"
+NEWS_LAB_PAGE = "news_lab"
+CORRELATION_PAGE = "correlation"
+ANALYST_PAGE = "analyst"
+RUN_HISTORY_PAGE = "run_history"
+TOUR_PAGE = "tour"
+SUMMARY_PAGE = "summary"
+VALIDATION_PAGE = "validation"
 
 VALID_PAGES = (
     HOME_PAGE,
@@ -28,6 +41,17 @@ VALID_PAGES = (
     FORGOT_PAGE,
     RESET_PAGE,
     SIMULATOR_PAGE,
+    IMPACT_LAB_PAGE,
+    UNIVERSE_MAP_PAGE,
+    PROFILES_PAGE,
+    MARKET_DATA_PAGE,
+    NEWS_LAB_PAGE,
+    CORRELATION_PAGE,
+    ANALYST_PAGE,
+    RUN_HISTORY_PAGE,
+    TOUR_PAGE,
+    SUMMARY_PAGE,
+    VALIDATION_PAGE,
 )
 
 
@@ -45,6 +69,10 @@ def init_session_state() -> None:
         st.session_state[PENDING_EMAIL_KEY] = ""
     if SESSION_COOKIE_KEY not in st.session_state:
         st.session_state[SESSION_COOKIE_KEY] = None
+    if COMPARE_SYMBOLS_KEY not in st.session_state:
+        st.session_state[COMPARE_SYMBOLS_KEY] = []
+    if DEMO_WATCHLIST_KEY not in st.session_state:
+        st.session_state[DEMO_WATCHLIST_KEY] = []
 
 
 def navigate_to(page: str) -> None:

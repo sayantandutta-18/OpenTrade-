@@ -1,1 +1,6 @@
-{}
+{
+  "Correlation": "In this simulation, lower average pairwise correlation across sectors increases effective independent holdings and reduces portfolio concentration.",
+  "Geography": "In this simulation, spreading company exposure across North America, Europe, and Asia-Pacific reduces single-region concentration.",
+  "Radar": "In this simulation, the factor radar compares liquidity, volatility, size, growth, value, and momentum while marking missing traits explicitly.",
+  "Risk": "In this simulation, market impact scales concavely with order size and news shocks temporarily widen spreads and slippage."
+}
