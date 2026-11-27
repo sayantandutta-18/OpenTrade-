@@ -4,6 +4,8 @@ import random
 from typing import Any
 
 from opentrade.engine.book import OrderBook, Side
+from opentrade.engine.cross_impact import simulate_coupled_books
+from opentrade.engine.execution import rank_execution_strategies
 from opentrade.engine.impact import inject_market_order
 from opentrade.engine.order_flow import seed_initial_book
 from opentrade.engine.profiles import PRESET_PROFILES, get_profile
@@ -73,4 +75,44 @@ def run_validation_service(profile_id: str, seed: int = 42, steps: int = 400) ->
             {"name": c.name, "passed": c.passed, "value": c.value, "threshold": c.threshold}
             for c in res.checks
         ],
+    }
+
+
+def run_execution_comparison_service(
+    profile_id: str = "synthetic_default",
+    total_qty: int = 500,
+    seed: int = 42,
+) -> dict[str, Any]:
+    """Run execution strategy shortfall comparison for UI display (T13.1)."""
+    res = rank_execution_strategies(profile_id=profile_id, total_qty=total_qty, seed=seed)
+    return {
+        "profile_id": res.profile_id,
+        "seed": res.seed,
+        "total_qty": res.total_qty,
+        "provenance": res.provenance.value,
+        "rankings": [
+            {
+                "rank": r.rank,
+                "strategy": r.strategy.value,
+                "is_bps": r.implementation_shortfall_bps,
+                "temp_bps": r.temporary_impact_bps,
+                "perm_bps": r.permanent_impact_bps,
+                "fill_rate": r.fill_rate,
+            }
+            for r in res.rankings
+        ],
+    }
+
+
+def run_cross_impact_service(
+    steps: int = 120,
+    cross_impact_beta: float = 0.8,
+    seed: int = 42,
+) -> dict[str, Any]:
+    """Run coupled-book cross-impact simulation for UI display (T15.1)."""
+    res = simulate_coupled_books(steps=steps, cross_impact_beta=cross_impact_beta, seed=seed)
+    return {
+        "emergent_correlation": res.emergent_correlation,
+        "provenance": res.provenance.value,
+        "steps": len(res.returns_a),
     }

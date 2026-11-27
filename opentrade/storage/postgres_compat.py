@@ -13,7 +13,7 @@ _INSERT_IGNORE_RE = re.compile(
     re.IGNORECASE,
 )
 _SERIAL_INSERT_RE = re.compile(
-    r"^\s*INSERT\s+INTO\s+(users|auth_tokens|sessions|chat_messages)\b",
+    r"^\s*INSERT\s+INTO\s+(users|auth_tokens|sessions|chat_messages|subscriptions)\b",
     re.IGNORECASE,
 )
 

@@ -19,6 +19,7 @@ from opentrade.ui.state import (
     PENDING_EMAIL_KEY,
     REGISTER_PAGE,
     SIMULATOR_PAGE,
+    TERMS_PAGE,
     clear_authenticated_user,
     get_db_path,
     navigate_to,
@@ -50,13 +51,26 @@ def render_register_page() -> None:
     password = st.text_input("Password", type="password", key="reg_password")
     confirm = st.text_input("Confirm password", type="password", key="reg_confirm")
     st.info(PRIVACY_NOTE)
+    terms_accepted = st.checkbox(
+        "I have read and agree to the Terms & Conditions and Educational Simulation Disclaimer.",
+        key="reg_terms",
+    )
 
     if st.button("Create account", type="primary"):
-        if password != confirm:
+        if not terms_accepted:
+            st.error(
+                "You must agree to the Terms & Conditions and Educational Simulation Disclaimer."
+            )
+        elif password != confirm:
             st.error("Passwords do not match.")
         else:
             status, payload = register_endpoint(
-                {"name": name, "email": email, "password": password},
+                {
+                    "name": name,
+                    "email": email,
+                    "password": password,
+                    "terms_accepted": True,
+                },
                 db_path=get_db_path(),
             )
             if status == 201:
@@ -77,11 +91,18 @@ def render_register_page() -> None:
         else:
             st.error(_error_message(payload, "Could not resend verification link."))
 
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
     with col1:
         st.button("Log in", key="reg_to_login", on_click=navigate_to, args=(LOGIN_PAGE,))
     with col2:
         st.button("Back to Home", key="reg_to_home", on_click=navigate_to, args=(HOME_PAGE,))
+    with col3:
+        st.button(
+            "Terms & Conditions",
+            key="reg_to_terms",
+            on_click=navigate_to,
+            args=(TERMS_PAGE,),
+        )
 
 
 def render_login_page() -> None:

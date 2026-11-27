@@ -217,6 +217,7 @@ def register_user(
     name: str | None,
     email: str | None,
     password: str | None,
+    terms_accepted: bool = False,
 ) -> UserView:
     """Register a new user account with validated input and Argon2id hashed password.
 
@@ -267,6 +268,7 @@ def register_user(
         password_hash=password_hash,
         created_at=now,
         updated_at=now,
+        terms_accepted_at=now if terms_accepted else None,
     )
 
     return UserView(
@@ -296,6 +298,7 @@ def register_endpoint(
         name = body.get("name")
         email = body.get("email")
         password = body.get("password")
+        terms_accepted = bool(body.get("terms_accepted", False))
 
         # Explicitly check if email already exists before calling register_user
         # per ADR-014 (register_user returns identical UserView for both cases).
@@ -303,7 +306,13 @@ def register_endpoint(
         user_repo = UserRepository(conn)
         existing_user = user_repo.get_by_email(clean_email)
 
-        user = register_user(conn, name=name, email=email, password=password)
+        user = register_user(
+            conn,
+            name=name,
+            email=email,
+            password=password,
+            terms_accepted=terms_accepted,
+        )
 
         if existing_user is not None:
             # Duplicate email: send security notification to real account owner (ADR-014)

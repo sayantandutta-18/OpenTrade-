@@ -119,6 +119,7 @@ def test_register_page_success_and_duplicate_anti_enumeration(
     _find_input(at, "Email").input("alice@example.com")
     _find_input(at, "Password").input("CorrectHorseBatteryStaple99!")
     _find_input(at, "Confirm password").input("CorrectHorseBatteryStaple99!")
+    at.checkbox[0].check()
     _find_button(at, "Create account").click().run()
     assert not at.exception
     assert "Check your inbox. We sent a link to alice@example.com." in _all_text(at)
@@ -131,6 +132,7 @@ def test_register_page_success_and_duplicate_anti_enumeration(
     _find_input(at_dup, "Email").input("alice@example.com")
     _find_input(at_dup, "Password").input("AnotherStrongPassword88!")
     _find_input(at_dup, "Confirm password").input("AnotherStrongPassword88!")
+    at_dup.checkbox[0].check()
     _find_button(at_dup, "Create account").click().run()
     assert not at_dup.exception
     assert "Check your inbox. We sent a link to alice@example.com." in _all_text(at_dup)
@@ -146,6 +148,7 @@ def test_register_page_validation_errors_mismatch_and_weak_password(tmp_path: Pa
     _find_input(at, "Email").input("bob@example.com")
     _find_input(at, "Password").input("CorrectHorseBatteryStaple99!")
     _find_input(at, "Confirm password").input("DifferentPassword99!")
+    at.checkbox[0].check()
     _find_button(at, "Create account").click().run()
     assert not at.exception
     assert "do not match" in _all_text(at).lower()
@@ -155,6 +158,7 @@ def test_register_page_validation_errors_mismatch_and_weak_password(tmp_path: Pa
     _find_input(at_weak, "Email").input("bob@example.com")
     _find_input(at_weak, "Password").input("short")
     _find_input(at_weak, "Confirm password").input("short")
+    at_weak.checkbox[0].check()
     _find_button(at_weak, "Create account").click().run()
     assert not at_weak.exception
     assert len(at_weak.error) > 0
@@ -177,6 +181,7 @@ def test_verify_page_valid_token_expired_token_and_resend(
     _find_input(at_reg, "Email").input("carol@example.com")
     _find_input(at_reg, "Password").input("StrongUniquePassphrase77!")
     _find_input(at_reg, "Confirm password").input("StrongUniquePassphrase77!")
+    at_reg.checkbox[0].check()
     _find_button(at_reg, "Create account").click().run()
     raw_token = _extract_token(sent[-1]["body"])
 

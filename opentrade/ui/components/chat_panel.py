@@ -14,7 +14,10 @@ from opentrade.ui.components.badge import render_provenance_badge
 from opentrade.ui.state import MODE_KEY, USER_KEY, get_db_path
 
 
-def render_chat_panel(screen_context: dict[str, Any] | None = None) -> None:
+def render_chat_panel(
+    screen_context: dict[str, Any] | None = None,
+    key_prefix: str = "chat_panel",
+) -> None:
     """Render the OpenTrade AI Assistant / Chat Panel (AC-37 to AC-40)."""
     st.subheader("Research Assistant Chat")
     mode = str(st.session_state.get(MODE_KEY, "DEMO"))
@@ -43,10 +46,10 @@ def render_chat_panel(screen_context: dict[str, Any] | None = None) -> None:
         role_label = "You" if msg["role"] == "user" else "Assistant"
         st.markdown(f"**{role_label}:** {msg['content']}")
 
-    prompt = st.text_input("Ask OpenTrade Assistant", key="chat_panel_input")
+    prompt = st.text_input("Ask OpenTrade Assistant", key=f"{key_prefix}_input")
     col1, col2 = st.columns(2)
     with col1:
-        if st.button("Send Message", key="chat_panel_send") and prompt.strip():
+        if st.button("Send Message", key=f"{key_prefix}_send") and prompt.strip():
             try:
                 reply = chat_turn_db_path(
                     db_path=db_path,
@@ -66,7 +69,7 @@ def render_chat_panel(screen_context: dict[str, Any] | None = None) -> None:
             except AppError as exc:
                 st.error(exc.message)
     with col2:
-        if st.button("Clear Chat History", key="chat_panel_clear"):
+        if st.button("Clear Chat History", key=f"{key_prefix}_clear"):
             if user_id is not None:
                 clear_chat_db_path(db_path, user_id)
             st.session_state["chat_session_messages"] = []

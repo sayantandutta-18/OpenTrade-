@@ -17,6 +17,7 @@ class UserRow:
     locked_until: str | None
     created_at: str
     updated_at: str
+    terms_accepted_at: str | None = None
 
 
 class UserRepository:
@@ -32,6 +33,7 @@ class UserRepository:
         password_hash: str,
         created_at: str,
         updated_at: str,
+        terms_accepted_at: str | None = None,
     ) -> UserRow:
         """Insert a new user row using parameterized SQL.
 
@@ -41,6 +43,7 @@ class UserRepository:
             password_hash: Salted Argon2id password hash.
             created_at: ISO 8601 UTC creation timestamp.
             updated_at: ISO 8601 UTC update timestamp.
+            terms_accepted_at: Optional ISO 8601 UTC Terms & Conditions acceptance timestamp.
 
         Returns:
             UserRow: Newly inserted user record.
@@ -51,10 +54,10 @@ class UserRepository:
                 """
                 INSERT INTO users (
                     name, email, password_hash, email_verified_at,
-                    failed_logins, locked_until, created_at, updated_at
-                ) VALUES (?, ?, ?, NULL, 0, NULL, ?, ?);
+                    failed_logins, locked_until, created_at, updated_at, terms_accepted_at
+                ) VALUES (?, ?, ?, NULL, 0, NULL, ?, ?, ?);
                 """,
-                (name, email, password_hash, created_at, updated_at),
+                (name, email, password_hash, created_at, updated_at, terms_accepted_at),
             )
             user_id = cursor.lastrowid
             if user_id is None:
@@ -69,6 +72,7 @@ class UserRepository:
                 locked_until=None,
                 created_at=created_at,
                 updated_at=updated_at,
+                terms_accepted_at=terms_accepted_at,
             )
         finally:
             cursor.close()
@@ -80,7 +84,7 @@ class UserRepository:
             cursor.execute(
                 """
                 SELECT id, name, email, password_hash, email_verified_at,
-                       failed_logins, locked_until, created_at, updated_at
+                       failed_logins, locked_until, created_at, updated_at, terms_accepted_at
                 FROM users WHERE id = ?;
                 """,
                 (user_id,),
@@ -98,6 +102,7 @@ class UserRepository:
                 locked_until=row[6],
                 created_at=row[7],
                 updated_at=row[8],
+                terms_accepted_at=row[9],
             )
         finally:
             cursor.close()
@@ -109,7 +114,7 @@ class UserRepository:
             cursor.execute(
                 """
                 SELECT id, name, email, password_hash, email_verified_at,
-                       failed_logins, locked_until, created_at, updated_at
+                       failed_logins, locked_until, created_at, updated_at, terms_accepted_at
                 FROM users WHERE email = ?;
                 """,
                 (email.strip().lower(),),
@@ -127,6 +132,7 @@ class UserRepository:
                 locked_until=row[6],
                 created_at=row[7],
                 updated_at=row[8],
+                terms_accepted_at=row[9],
             )
         finally:
             cursor.close()
