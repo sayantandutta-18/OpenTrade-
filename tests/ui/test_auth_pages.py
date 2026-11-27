@@ -226,6 +226,7 @@ def test_login_page_success_invalid_lockout_and_unverified_banner(
     _find_input(at_reg, "Email").input("dave@example.com")
     _find_input(at_reg, "Password").input("DaveSuperStrongPassword1!")
     _find_input(at_reg, "Confirm password").input("DaveSuperStrongPassword1!")
+    at_reg.checkbox[0].check()
     _find_button(at_reg, "Create account").click().run()
 
     # Valid login for unverified user stores session & shows verify banner
@@ -273,6 +274,7 @@ def test_forgot_and_reset_pages_end_to_end_and_expired_token(
     _find_input(at_reg, "Email").input("eve@example.com")
     _find_input(at_reg, "Password").input("EveOriginalPassword99!")
     _find_input(at_reg, "Confirm password").input("EveOriginalPassword99!")
+    at_reg.checkbox[0].check()
     _find_button(at_reg, "Create account").click().run()
 
     # Unknown email on forgot returns identical anti-enumeration text
