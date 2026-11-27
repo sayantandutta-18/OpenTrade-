@@ -45,30 +45,25 @@ class Settings:
     llm_provider: str | None = None
     llm_api_key: str | None = None
     llm_model: str | None = None
+    database_url: str | None = None
 
     def __repr__(self) -> str:
         """Return representation with secret variables redacted per docs/ENVIRONMENT.md."""
         return (
-            f"Settings(environment={self.environment!r}, "
-            f"secret_key='[REDACTED]', "
-            f"base_url={self.base_url!r}, "
-            f"db_path={self.db_path!r}, "
-            f"log_level={self.log_level!r}, "
-            f"chat_hourly_limit={self.chat_hourly_limit}, "
+            f"Settings(environment={self.environment!r}, secret_key='[REDACTED]', "
+            f"base_url={self.base_url!r}, db_path={self.db_path!r}, "
+            f"database_url={'[REDACTED]' if self.database_url else None!r}, "
+            f"log_level={self.log_level!r}, chat_hourly_limit={self.chat_hourly_limit}, "
             f"chat_daily_limit={self.chat_daily_limit}, "
             f"analyst_daily_limit={self.analyst_daily_limit}, "
-            f"run_daily_limit={self.run_daily_limit}, "
-            f"allow_live_data={self.allow_live_data}, "
-            f"smtp_host={self.smtp_host!r}, "
-            f"smtp_port={self.smtp_port}, "
+            f"run_daily_limit={self.run_daily_limit}, allow_live_data={self.allow_live_data}, "
+            f"smtp_host={self.smtp_host!r}, smtp_port={self.smtp_port}, "
             f"smtp_user={self.smtp_user!r}, "
-            f"smtp_password='[REDACTED]' if self.smtp_password else None, "
-            f"smtp_from={self.smtp_from!r}, "
-            f"market_provider={self.market_provider!r}, "
-            f"twelve_data_api_key='[REDACTED]' if self.twelve_data_api_key else None, "
-            f"news_feeds={self.news_feeds!r}, "
-            f"llm_provider={self.llm_provider!r}, "
-            f"llm_api_key='[REDACTED]' if self.llm_api_key else None, "
+            f"smtp_password={'[REDACTED]' if self.smtp_password else None!r}, "
+            f"smtp_from={self.smtp_from!r}, market_provider={self.market_provider!r}, "
+            f"twelve_data_api_key={'[REDACTED]' if self.twelve_data_api_key else None!r}, "
+            f"news_feeds={self.news_feeds!r}, llm_provider={self.llm_provider!r}, "
+            f"llm_api_key={'[REDACTED]' if self.llm_api_key else None!r}, "
             f"llm_model={self.llm_model!r})"
         )
 
@@ -225,16 +220,24 @@ def load_settings(
     else:
         news_feeds = ()
 
-    # 8. LLM settings
+    # 8. LLM & database URL settings
     llm_provider = str(raw.get("LLM_PROVIDER")).strip() if raw.get("LLM_PROVIDER") else None
     llm_api_key = str(raw.get("LLM_API_KEY")).strip() if raw.get("LLM_API_KEY") else None
     llm_model = str(raw.get("LLM_MODEL")).strip() if raw.get("LLM_MODEL") else None
+    raw_db_url = str(raw.get("DATABASE_URL")).strip() if raw.get("DATABASE_URL") else None
+    if raw_db_url:
+        if not raw_db_url.startswith(("postgresql://", "postgres://")):
+            raise ValidationError("DATABASE_URL must start with 'postgresql://' or 'postgres://'")
+        if environment in ("staging", "production") and "sslmode=" not in raw_db_url:
+            sep = "&" if "?" in raw_db_url else "?"
+            raw_db_url = f"{raw_db_url}{sep}sslmode=require"
 
     return Settings(
         environment=environment,
         secret_key=secret_key,
         base_url=base_url,
         db_path=db_path,
+        database_url=raw_db_url,
         log_level=log_level,
         chat_hourly_limit=chat_hourly_limit,
         chat_daily_limit=chat_daily_limit,

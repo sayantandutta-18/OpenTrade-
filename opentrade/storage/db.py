@@ -1,58 +1,78 @@
 """Database connection and transaction management per docs/DATABASE.md.
 
-Engine: SQLite 3 with WAL mode and foreign keys enabled on every connection.
+Supports PostgreSQL (via DATABASE_URL + psycopg v3) and SQLite 3 (WAL + foreign keys).
 """
 
+import os
 import sqlite3
 from collections.abc import Generator
 from contextlib import contextmanager
 from pathlib import Path
 from typing import Any
 
+from dotenv import dotenv_values
+
+from opentrade.storage.postgres_compat import PostgresConnectionWrapper, is_postgres_url
+
+try:
+    import psycopg
+except ImportError:  # pragma: no cover - optional until installed in prod
+    psycopg = None  # type: ignore[assignment]
+
+
+def _resolve_database_url() -> str | None:
+    """Resolve DATABASE_URL from process environment or local .env file."""
+    env_url = os.environ.get("DATABASE_URL")
+    if env_url and env_url.strip():
+        return env_url.strip()
+    if Path(".env").is_file():
+        file_url = dotenv_values(".env").get("DATABASE_URL")
+        if file_url and str(file_url).strip():
+            return str(file_url).strip()
+    return None
+
 
 def get_connection(
     db_path: str | Path | None = None,
     timeout: float = 30.0,
-) -> sqlite3.Connection:
-    """Create a SQLite connection with foreign keys enabled and WAL journal mode.
+) -> Any:
+    """Create a PostgreSQL (when DATABASE_URL is active) or SQLite connection."""
+    target_url = str(db_path).strip() if db_path and is_postgres_url(db_path) else None
+    if db_path is None:
+        target_url = _resolve_database_url()
 
-    Args:
-        db_path: Path to SQLite database file. Defaults to './data/opentrade.db'.
-        timeout: SQLite lock timeout in seconds.
+    if target_url and is_postgres_url(target_url):
+        if psycopg is None:
+            raise RuntimeError(
+                "psycopg is required for PostgreSQL connections. Install 'psycopg[binary]'."
+            )
+        pg_conn = psycopg.connect(target_url, autocommit=True, connect_timeout=int(timeout))
+        return PostgresConnectionWrapper(pg_conn)
 
-    Returns:
-        sqlite3.Connection: Active database connection.
-    """
-    target_path = Path(db_path) if db_path else Path("./data/opentrade.db")
-
-    # If it's not in-memory, ensure parent directory exists
+    target_path = (
+        Path(db_path)
+        if db_path
+        else Path(os.environ.get("OPENTRADE_DB_PATH") or "./data/opentrade.db")
+    )
     if str(target_path) != ":memory:":
         target_path.parent.mkdir(parents=True, exist_ok=True)
 
-    # isolation_level=None enables autocommit mode so explicit BEGIN/COMMIT work cleanly
     conn: sqlite3.Connection = sqlite3.connect(
         str(target_path),
         timeout=timeout,
         isolation_level=None,
     )
-
-    # Enable foreign keys on every connection
     conn.execute("PRAGMA foreign_keys = ON;")
-
-    # Enable WAL mode for disk-backed databases
     if str(target_path) != ":memory:":
         conn.execute("PRAGMA journal_mode = WAL;")
-
     return conn
 
 
 @contextmanager
-def transaction(conn: sqlite3.Connection) -> Generator[sqlite3.Cursor, Any, None]:
-    """Context manager for executing statements inside a single transaction.
-
-    Rolls back automatically on exception and commits on success.
-    """
-    conn.execute("BEGIN IMMEDIATE;")
+def transaction(conn: Any) -> Generator[Any, Any, None]:
+    """Context manager for executing statements inside a single transaction."""
+    begin_stmt = "BEGIN;" if isinstance(conn, PostgresConnectionWrapper) else "BEGIN IMMEDIATE;"
+    conn.execute(begin_stmt)
     cursor = conn.cursor()
     try:
         yield cursor

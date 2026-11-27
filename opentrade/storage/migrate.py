@@ -4,17 +4,17 @@ Applies numbered SQL files in order. Each migration runs in one transaction.
 A failed migration rolls back and stops execution.
 """
 
-import sqlite3
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
+from typing import Any
 
 from opentrade.storage.db import get_connection, transaction
 
 DEFAULT_MIGRATIONS_DIR = Path(__file__).resolve().parent / "migrations"
 
 
-def get_applied_versions(conn: sqlite3.Connection) -> set[int]:
+def get_applied_versions(conn: Any) -> set[int]:
     """Retrieve the set of already applied migration version numbers."""
     cursor = conn.cursor()
     try:

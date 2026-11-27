@@ -22,6 +22,12 @@ from opentrade.config import (
 )
 
 
+@pytest.fixture(autouse=True)
+def _isolate_cwd_from_repo_dotenv(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    """Prevent tests/test_config.py from reading a developer's local .env file."""
+    monkeypatch.chdir(tmp_path)
+
+
 def test_valid_minimal_local_settings(monkeypatch: pytest.MonkeyPatch) -> None:
     """Settings test: Validate that minimal required settings load successfully with defaults."""
     env = {
